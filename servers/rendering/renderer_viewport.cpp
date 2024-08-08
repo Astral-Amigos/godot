@@ -345,8 +345,10 @@ void RendererViewport::_draw_viewport(Viewport *p_viewport) {
 		_configure_3d_render_buffers(p_viewport);
 	}
 
-	Color bgcolor = p_viewport->transparent_bg ? Color(0, 0, 0, 0) : RSG::texture_storage->get_default_clear_color();
-
+	Color bgcolor = p_viewport->clear_color;//: RSG::texture_storage->get_default_clear_color();
+	if (p_viewport->transparent_bg) {
+		bgcolor.a = 0;
+	}
 	if (p_viewport->clear_mode != RS::VIEWPORT_CLEAR_NEVER) {
 		RSG::texture_storage->render_target_request_clear(p_viewport->render_target, bgcolor);
 		if (p_viewport->clear_mode == RS::VIEWPORT_CLEAR_ONLY_NEXT_FRAME) {
@@ -1273,6 +1275,13 @@ void RendererViewport::viewport_set_transparent_background(RID p_viewport, bool 
 
 	RSG::texture_storage->render_target_set_transparent(viewport->render_target, p_enabled);
 	viewport->transparent_bg = p_enabled;
+}
+
+void RendererViewport::viewport_set_clear_color(RID p_viewport, Color p_color) {
+	Viewport *viewport = viewport_owner.get_or_null(p_viewport);
+	ERR_FAIL_NULL(viewport);
+
+	viewport->clear_color = p_color;
 }
 
 void RendererViewport::viewport_set_global_canvas_transform(RID p_viewport, const Transform2D &p_transform) {

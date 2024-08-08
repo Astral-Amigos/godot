@@ -262,6 +262,7 @@ private:
 	Rect2 last_vp_rect;
 
 	bool transparent_bg = false;
+	Color clear_color = Color(0, 0, 0, 1.0);
 	bool use_hdr_2d = false;
 	bool gen_mipmaps = false;
 
@@ -537,6 +538,8 @@ public:
 
 	void set_transparent_background(bool p_enable);
 	bool has_transparent_background() const;
+	void set_clear_color(Color p_color);
+	Color get_clear_color() const;
 
 	void set_use_hdr_2d(bool p_enable);
 	bool is_using_hdr_2d() const;
